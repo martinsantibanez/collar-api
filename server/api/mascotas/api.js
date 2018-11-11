@@ -14,14 +14,14 @@ router.get('/mascotas', (req, res) => {
     (error) => { console.log(error); res.status(500).send(error); }
   );
 })
-//get single Table
+//get single Mascota
 router.get('/mascotas/:id', (req,res) => {
   getMascota(req.params.id).then(
     (result) => { res.send(result); },
     (error) => { res.status(400).send(error); }
   );
 });
-//create new Table
+//create new Mascota
 router.post('/mascotas', (req, res) => {
   createMascota(req.body).then(
     (result) => { res.send(Object.assign({}, result._doc, { created: true })); },
@@ -29,14 +29,14 @@ router.post('/mascotas', (req, res) => {
   );
 });
 
-//edit Table
+//edit Mascota
 router.put('/mascotas/:id', (req, res) => {
   editMascota(req.params.id, req.body).then(
     (result) => { res.send(result); },
     (error) => { res.status(400).send(error)}
   );
 });
-//remove Table
+//remove Mascota
 router.delete('/mascotas/:id', (req, res) => {
   deleteMascota(req.params.id, req.body).then(
     (result) => { res.send(result); },

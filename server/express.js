@@ -45,7 +45,7 @@ const expressConfig = (app, serverConfig) => {
   // app.use(flash());
 
    // apply passport configs
-//   require('./passport')(app);
+  require('./passport')(app);
  
   //cors
   app.use(cors());

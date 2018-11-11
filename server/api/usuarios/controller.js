@@ -1,8 +1,8 @@
-const Mascota = require('./model');
+const Usuario = require('../auth/model');
 
-const getAllMascotas = () => {
+const getAllUsuarios = () => {
   return new Promise((resolve, reject) => {
-    Mascota
+    Usuario
     .find()
     .lean()
     .exec((error, result) => {
@@ -14,15 +14,15 @@ const getAllMascotas = () => {
 }
 
 /**
- * get a single mascota
- * @param  {String} mascota_id
+ * get a single usuario
+ * @param  {String} usuario_id
  * @return {Promise}
  */
-const getMascota = (mascota_id) => {
-  // console.log(mascota_id);
+const getUsuario = (usuario_id) => {
+  // console.log(usuario_id);
   return new Promise((resolve, reject) => {
-    Mascota
-    .findById(mascota_id)
+    Usuario
+    .findById(usuario_id)
     .lean()
     .exec((error, result) => {
       if (error) { console.log(error); reject(error); }
@@ -32,31 +32,30 @@ const getMascota = (mascota_id) => {
   });
 };
 
-const createMascota = (mascota) => {
+const createUsuario = (usuario) => {
   return new Promise((resolve, reject) => {
-    const newMascota = new Mascota(mascota);
-
-    newMascota.save((error) => {
+    const newUsuario = new Usuario(usuario);
+    newUsuario.save((error) => {
       if(error) { console.log(error); reject(error); }
-      else { resolve(newMascota); }
+      else { resolve(newUsuario); }
     });
   });
 }
 
-const editMascota = (mascota_id, mascota) => {
+const editUsuario = (usuario_id, usuario) => {
   return new Promise((resolve, reject) => {
-    Mascota
-    .findByIdAndUpdate(mascota_id, mascota, (error, result) => {
+    Usuario
+    .findByIdAndUpdate(usuario_id, usuario, (error, result) => {
       if(error) { console.log(error); reject(error); }
       else { resolve(result); }
     });
   });
 }
 
-const deleteMascota = (mascota_id) => {
+const deleteUsuario = (usuario_id) => {
   return new Promise((resolve, reject) => {
-    Mascota
-    .findByIdAndRemove(mascota_id, (error, result) => {
+    Usuario
+    .findByIdAndRemove(usuario_id, (error, result) => {
       if(error) { console.log(error); reject(error); }
       else { resolve(result); }
     });
@@ -64,9 +63,9 @@ const deleteMascota = (mascota_id) => {
 }
 
 module.exports = {
-  getAllMascotas,
-  getMascota,
-  createMascota,
-  editMascota,
-  deleteMascota
+  getAllUsuarios,
+  getUsuario,
+  createUsuario,
+  editUsuario,
+  deleteUsuario
 }

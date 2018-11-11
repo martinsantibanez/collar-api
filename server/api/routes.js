@@ -3,7 +3,11 @@
  */
 const path = require('path');
 const express = require('express');
-const petAPI = require('./pet/api');
+const mascotasAPI = require('./mascotas/api');
+const usuariosAPI = require('./usuarios/api');
+const authAPI = require('./auth/api');
+const passport = require('passport');
+const authService = require('./services/auth');
 
 /**
  * routes configurations
@@ -20,7 +24,11 @@ const routesConfig = (app) => {
 
 
   // apply apis
-  app.use('/api', petAPI);
+  app.use('/api', authAPI);
+  // app.use('/api', requireAuth, usuariosAPI);
+  app.use('/api', authService.requireLogin, authService.roleAuthorization(['admin']), usuariosAPI);
+  // app.use('/api', mascotasAPI);
+
   
   // all get request will send index.html for react-router
   // to handle the route request
