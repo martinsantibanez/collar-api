@@ -3,6 +3,8 @@ const getAllUsuarios = require('./controller').getAllUsuarios;
 const createUsuario = require('./controller').createUsuario;
 const editUsuario = require('./controller').editUsuario;
 const deleteUsuario = require('./controller').deleteUsuario;
+const createMascota = require('./controller').createMascota;
+const getMascotas = require('./controller').getMascotas;
 
 const express = require('express');
 const router = express.Router();
@@ -24,8 +26,8 @@ router.get('/usuarios/:id', (req,res) => {
 //create new Usuario
 router.post('/usuarios', (req, res) => {
   createUsuario(req.body).then(
-    (result) => { res.send(Object.assign({}, result._doc, { created: true })); },
-    (error) => { res.status(400).send({ created: false }); }
+    (result) => { res.send(Object.assign({}, result, { created: true })); },
+    (error) => { console.log(error); res.status(400).send({ created: false }); }
   );
 });
 
@@ -41,6 +43,20 @@ router.delete('/usuarios/:id', (req, res) => {
   deleteUsuario(req.params.id, req.body).then(
     (result) => { res.send(result); },
     (error) => { res.status(400).send(error) }
+  );
+});
+//get Mascotas from Usuario
+router.get('/usuarios/:id/mascotas', (req, res) => {
+  getMascotas(req.params.id, req.body).then(
+    (result) => { res.send(result); },
+    (error) => { res.status(400).send(error); }
+  );
+});
+//add Mascota to Usuario
+router.post('/usuarios/:id/mascotas', (req, res) => {
+  createMascota(req.params.id, req.body).then(
+    (result) => { res.send(result); },
+    (error) => { res.status(400).send(error); }
   );
 });
 

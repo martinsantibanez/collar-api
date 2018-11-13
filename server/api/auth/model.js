@@ -16,7 +16,8 @@ var UserSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'vet'],
         default: 'user'
-    }
+    },
+    nombre: String
 }, {
     timestamps: true
 });

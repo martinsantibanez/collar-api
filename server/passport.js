@@ -1,7 +1,5 @@
 const passport = require('passport');
 const serverConfig = require('../config');
-const findOrCreate = require('./api/auth/controller').findOrCreate;
-const getUser = require('./api/auth/controller').getUser;
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var LocalStrategy = require('passport-local').Strategy;

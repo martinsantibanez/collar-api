@@ -4,6 +4,7 @@ const getAllMascotas = () => {
   return new Promise((resolve, reject) => {
     Mascota
     .find()
+    .populate('dueno', 'nombre')
     .lean()
     .exec((error, result) => {
       if (error) { console.log(error); reject(error); }

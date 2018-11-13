@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var mascotaSchema = Schema({
     nombre: {type: String, required: true},
     nacimiento: Number,
-    raza: String
-//   waiter: {type: Schema.Types.ObjectId, ref: 'User'},
+    raza: String,
+    dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 //   order: [{
     // product: {type: Schema.Types.ObjectId, ref: 'Product'},
     // quantity: Number

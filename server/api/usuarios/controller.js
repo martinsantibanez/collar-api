@@ -1,4 +1,5 @@
 const Usuario = require('../auth/model');
+const Mascota = require('../mascotas/model');
 
 const getAllUsuarios = () => {
   return new Promise((resolve, reject) => {
@@ -23,6 +24,7 @@ const getUsuario = (usuario_id) => {
   return new Promise((resolve, reject) => {
     Usuario
     .findById(usuario_id)
+    .select('-password')
     .lean()
     .exec((error, result) => {
       if (error) { console.log(error); reject(error); }
@@ -34,10 +36,38 @@ const getUsuario = (usuario_id) => {
 
 const createUsuario = (usuario) => {
   return new Promise((resolve, reject) => {
-    const newUsuario = new Usuario(usuario);
-    newUsuario.save((error) => {
-      if(error) { console.log(error); reject(error); }
-      else { resolve(newUsuario); }
+    var email = usuario.email;
+    var password = usuario.password;
+    var role = usuario.role;
+    var nombre = usuario.nombre;
+    if(!email){
+      // return res.status(422).send({error: 'You must enter an email address'});
+      reject(new Error());
+    } 
+    if(!password){
+      reject(new Error());
+      // return res.status(422).send({error: 'You must enter a password'});
+    }
+    Usuario.findOne({email: email}, function(err, existingUser){
+      if(err){
+        reject(err);
+      }
+      if(existingUser){
+        reject(new Error());
+          // return res.status(422).send({error: 'That email address is already in use'});
+      }
+      var user = new Usuario({
+        email: email,
+        password: password,
+        role: role,
+        nombre: nombre
+      });
+      user.save(function(err, user){
+        if(err){
+          reject(err);
+        }
+        resolve(user);
+      });
     });
   });
 }
@@ -62,10 +92,32 @@ const deleteUsuario = (usuario_id) => {
   });
 }
 
+const createMascota = (usuario_id, mascota) => {
+  return new Promise((resolve, reject) => {
+    Usuario
+    .findById(usuario_id, function (err, usuario) {
+      if(err || !usuario) reject(err);
+      else{
+        var newMascota = new Mascota({
+          nombre: mascota.nombre,
+          nacimiento: mascota.nacimiento,
+          raza: mascota.raza,
+          dueno: usuario
+        });
+        newMascota.save((error) => {
+          if(error) { console.log(error); reject(error); }
+          else { resolve(newMascota); }
+        });
+      }
+    });
+  });
+};
+
 module.exports = {
   getAllUsuarios,
   getUsuario,
   createUsuario,
   editUsuario,
-  deleteUsuario
+  deleteUsuario,
+  createMascota
 }

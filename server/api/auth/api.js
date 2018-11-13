@@ -3,19 +3,20 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 const authService = require('../services/auth');
-const getPerfilPropio = require('./controller').getPerfilPropio;
-var AuthenticationController = require('./controller');
+// const getPerfilPropio = require('./controller').getPerfilPropio;
 var requireLogin = passport.authenticate('local', {session: false});
 
-router.post('/register', AuthenticationController.register);
-router.post('/login', requireLogin, AuthenticationController.login);
+// router.post('/register', authService.register);
+router.post('/login', requireLogin, authService.login);
 
-router.get('/perfil', authService.requireLogin, (req, res) => {
-  getPerfilPropio(req, res).then(
-    (result) => { res.send(result); },
-    (error) => { console.log(error); res.status(400).send(error); }
-  );
-});
+
+// TODO
+// router.get('/perfil', authService.requireLogin, (req, res) => {
+//   getPerfilPropio(req, res).then(
+//     (result) => { res.send(result); },
+//     (error) => { console.log(error); res.status(400).send(error); }
+//   );
+// });
 module.exports = router;
 
 //para lokear rutas

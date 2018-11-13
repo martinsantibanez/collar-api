@@ -25,9 +25,9 @@ const routesConfig = (app) => {
 
   // apply apis
   app.use('/api', authAPI);
-  // app.use('/api', requireAuth, usuariosAPI);
-  app.use('/api', authService.requireLogin, authService.roleAuthorization(['admin']), usuariosAPI);
-  // app.use('/api', mascotasAPI);
+  // app.use('/api', authService.requireLogin, authService.roleAuthorization(['vet']), usuariosAPI);
+  app.use('/api', usuariosAPI);
+  app.use('/api', mascotasAPI);
 
   
   // all get request will send index.html for react-router

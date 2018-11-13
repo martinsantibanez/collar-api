@@ -1,6 +1,47 @@
-const jwt = require('jsonwebtoken');
-const serverConfig = require('../../../config');
-const User = require('../auth/model');
+var jwt = require('jsonwebtoken'); 
+var User = require('../auth/model');
+var serverConfig = require('../../../config');
+ 
+function generateToken(user){
+    return jwt.sign(user, serverConfig.SECRET, {
+        expiresIn: 10080
+    });
+}
+ 
+function setUserInfo(request){
+    return {
+        _id: request._id,
+        email: request.email,
+        role: request.role
+    };
+}
+ 
+exports.login = function(req, res, next){
+    var userInfo = setUserInfo(req.user);
+    res.status(200).json({
+        token: generateToken(userInfo),
+        user: userInfo
+    });
+ 
+}
+ 
+ 
+exports.roleAuthorization = function(roles){
+  return function(req, res, next){
+    var user = req.user;
+    User.findById(user._id, function(err, foundUser){
+      if(err){
+        res.status(422).json({error: 'No user found.'});
+        return next(err);
+      }
+      if(roles.indexOf(foundUser.role) > -1){
+        return next();
+      }
+      res.status(401).json({error: 'You are not authorized to view this content'});
+      return next('Unauthorized');
+    });
+  }
+}
 
 // check if Token exists on request Header and attach token to request as attribute
 exports.requireLogin = (req, res, next) => {
@@ -20,34 +61,3 @@ exports.requireLogin = (req, res, next) => {
         res.sendStatus(403);
     }
 };
-
-// Issue Token
-exports.signToken = (req, res) => {
-    return new Promise((resolve, reject) => {
-        jwt.sign({_id: req.user._id}, serverConfig.SECRET, {expiresIn:'7 days'}, (err, token) => {
-            if(err){
-                reject(err);
-            } else {
-                resolve(token);
-            }
-        });
-    });
-}
-
-// Autorizar a los roles del arreglo roles.
-exports.roleAuthorization = function(roles){
-    return function(req, res, next){
-        var user = req.user;
-        User.findById(user._id, function(err, foundUser){
-            if(err){
-                res.status(422).json({error: 'No user found.'});
-                return next(err);
-            }
-            if(roles.indexOf(foundUser.role) > -1){
-                return next();
-            }
-            res.status(401).json({error: 'You are not authorized to view this content'});
-            return next('Unauthorized');
-        });
-    }
-}
