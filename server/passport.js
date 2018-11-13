@@ -1,35 +1,58 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const serverConfig = require('../config');
 const findOrCreate = require('./api/auth/controller').findOrCreate;
 const getUser = require('./api/auth/controller').getUser;
+var JwtStrategy = require('passport-jwt').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt;
+var LocalStrategy = require('passport-local').Strategy;
+const User = require('./api/auth/model');
+var localOptions = {
+  usernameField: 'email'
+};
 
-const passportConfig = (app) => {
-    app.use(passport.initialize());
-    app.use(passport.session());
-    passport.serializeUser((user, done) => {
-      done(null, user._id);
+var localLogin = new LocalStrategy(localOptions, function(email, password, done){
+  User.findOne({
+    email: email
+  }, function(err, user){
+    if(err){
+      return done(err);
+    }
+    if(!user){
+      return done(null, false, {error: 'Login failed. Please try again.'});
+    }
+    user.comparePassword(password, function(err, isMatch){
+      if(err){
+        return done(err);
+      }
+      if(!isMatch){
+        return done(null, false, {error: 'Login failed. Please try again.'});
+      }
+      return done(null, user);
     });
-      
-    passport.deserializeUser((id, done) => {
-      getUser(id).then(
-        (user) => { done(null, user); },
-        (error) => { done(error); }
-      );
-    });
+  }); 
+});
 
-    // Use the GoogleStrategy within Passport.
-    //   Strategies in Passport require a `verify` function, which accept
-    //   credentials (in this case, an accessToken, refreshToken, and Google
-    //   profile), and invoke a callback with a user object.
-    passport.use(new GoogleStrategy({
-        clientID: serverConfig.GOOGLE_CLIENT_ID,
-        clientSecret: serverConfig.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/auth/callback",
-        authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth?prompt=select_account"
-        }, 
-        findOrCreate
-    ));
+var jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: serverConfig.SECRET
+};
+
+var jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
+    User.findById(payload._id, function(err, user){
+        if(err){
+            return done(err, false);
+        }
+        if(user){
+            done(null, user);
+        } else {
+            done(null, false);
+        }
+    });
+});
+
+const passportConfig = (app) => {  
+  passport.use(jwtLogin);
+  passport.use(localLogin);
 };
 
 module.exports = passportConfig;

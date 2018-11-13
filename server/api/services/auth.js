@@ -23,12 +23,14 @@ exports.requireLogin = (req, res, next) => {
 
 // Issue Token
 exports.signToken = (req, res) => {
-    jwt.sign({_id: req.user._id}, serverConfig.SECRET, {expiresIn:'7 days'}, (err, token) => {
-        if(err){
-            res.sendStatus(500);
-        } else {
-            res.json({token});
-        }
+    return new Promise((resolve, reject) => {
+        jwt.sign({_id: req.user._id}, serverConfig.SECRET, {expiresIn:'7 days'}, (err, token) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(token);
+            }
+        });
     });
 }
 

@@ -1,72 +1,80 @@
-const User = require('./model');
-const jwt = require('jsonwebtoken');
-const serverConfig = require('../../../config');
-
-const authenticateUser = (email, password, done) => {
-    User.findOne({ email: email }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) {
-          return done(null, false, { message: 'Incorrect username.' });
-        }
-        if (!_validPassword(user, password)) {
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-        return done(null, user);
+var jwt = require('jsonwebtoken'); 
+var User = require('./model');
+var serverConfig = require('../../../config');
+ 
+function generateToken(user){
+    return jwt.sign(user, serverConfig.SECRET, {
+        expiresIn: 10080
     });
-};
-
-const findOrCreate = (accessToken, refreshToken, profile, done) => {
-    // find a user in Mongo with provided userId
-    User.findOne({ googleId: profile.id }, function(err, user) {
-      console.log(profile);
-      // In case of any error return
-      if (err){
-        console.log('Error in SignUp: '+err);
-        return done(err);
+}
+ 
+function setUserInfo(request){
+    return {
+        _id: request._id,
+        email: request.email,
+        role: request.role
+    };
+}
+ 
+exports.login = function(req, res, next){
+    var userInfo = setUserInfo(req.user);
+    res.status(200).json({
+        token: generateToken(userInfo),
+        user: userInfo
+    });
+ 
+}
+ 
+exports.register = function(req, res, next){
+  console.log(req);
+  var email = req.body.email;
+  var password = req.body.password;
+  var role = req.body.role;
+  if(!email){
+    return res.status(422).send({error: 'You must enter an email address'});
+  } 
+  if(!password){
+      return res.status(422).send({error: 'You must enter a password'});
+  }
+  User.findOne({email: email}, function(err, existingUser){
+      if(err){
+          return next(err);
       }
-      if (!user) {
-        // if there is no user with that id create it
-        user = new User();
-        // set the user's local credentials
-        user.googleId = profile.id;
-        user.email = profile.emails[0].value;
-        // save the user
-        user.save(function(err) {
-          if (err){
-            console.log('Error in Saving user: '+err);  
-            return done(err);
+      if(existingUser){
+          return res.status(422).send({error: 'That email address is already in use'});
+      }
+      var user = new User({
+          email: email,
+          password: password,
+          role: role
+      });
+      user.save(function(err, user){
+          if(err){
+              return next(err);
           }
-          console.log('User Registration succesful');    
-        });
-      }
-      return done(err, user);
-    });
-}
-
-const getUser = (id) => {
-  return new Promise((resolve, reject) => {
-    User.
-    findById(id, (err, res) => {
-      if(err) reject(err);
-      else {
-        resolve(res);
-      }
-    });
+          var userInfo = setUserInfo(user);
+          res.status(201).json({
+              token: generateToken(userInfo),
+              user: userInfo
+          })
+      });
   });
 }
-
-const getPerfilPropio = (req, res) => {
-  return new Promise((resolve, reject) => {
-    getUser(req.authData.userId).then(
-      (user) => { resolve(user); },
-      (error) => { reject(error); }
-    )
-  });
+ 
+exports.roleAuthorization = function(roles){
+  return function(req, res, next){
+    var user = req.user;
+    User.findById(user._id, function(err, foundUser){
+      if(err){
+        res.status(422).json({error: 'No user found.'});
+        return next(err);
+      }
+      if(roles.indexOf(foundUser.role) > -1){
+        return next();
+      }
+      res.status(401).json({error: 'You are not authorized to view this content'});
+      return next('Unauthorized');
+    });
+  }
+ 
 }
-
-module.exports = {
-  authenticateUser,
-  findOrCreate,
-  getUser,
-  getPerfilPropio
-};

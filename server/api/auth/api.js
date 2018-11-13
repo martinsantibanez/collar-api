@@ -3,29 +3,12 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 const authService = require('../services/auth');
-const getPerfilPropio = require('./controller').getPerfilPropio
+const getPerfilPropio = require('./controller').getPerfilPropio;
+var AuthenticationController = require('./controller');
+var requireLogin = passport.authenticate('local', {session: false});
 
-// GET /auth/google
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Google authentication will involve
-//   redirecting the user to google.com.  After authorization, Google
-//   will redirect the user back to this application at /auth/google/callback
-router.get('/auth',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.email'] }));
-
-// GET /auth/google/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
-router.get('/auth/callback', passport.authenticate('google', {session: false}), (req, res) => {
-  authService.signToken(req, res);
-});
-
-router.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/api');
-});
+router.post('/register', AuthenticationController.register);
+router.post('/login', requireLogin, AuthenticationController.login);
 
 router.get('/perfil', authService.requireLogin, (req, res) => {
   getPerfilPropio(req, res).then(
@@ -34,3 +17,7 @@ router.get('/perfil', authService.requireLogin, (req, res) => {
   );
 });
 module.exports = router;
+
+//para lokear rutas
+// var requireAuth = passport.authenticate('jwt', {session: false}),
+//     requireLogin = passport.authenticate('local', {session: false});

@@ -26,6 +26,7 @@ const expressConfig = (app, serverConfig) => {
   // get data from html froms
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(cors());
 
   // read cookies (should be above session)
   // app.use(cookieParser());
@@ -48,7 +49,6 @@ const expressConfig = (app, serverConfig) => {
   require('./passport')(app);
  
   //cors
-  app.use(cors());
 
   // apply route configs
   require('./api/routes')(app);
