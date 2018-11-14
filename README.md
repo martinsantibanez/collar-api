@@ -59,7 +59,9 @@ Output:
     }
 }
 ```
+## `GET /usuarios/:id/mascotas`
+ Obtener mascotas del usuario id.
 ## `POST /usuarios/:id/mascotas`
-Agregar mascota al sistema.
+Agregar mascota al sistema asociado al usuario id.
 ## `GET /mascotas`
 Lista de todas las mascotas

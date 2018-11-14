@@ -97,12 +97,12 @@ const createMascota = (usuario_id, mascota) => {
     Usuario
     .findById(usuario_id, function (err, usuario) {
       if(err || !usuario) reject(err);
-      else{
+      else {
         var newMascota = new Mascota({
           nombre: mascota.nombre,
           nacimiento: mascota.nacimiento,
           raza: mascota.raza,
-          dueno: usuario
+          dueno: usuario._id
         });
         newMascota.save((error) => {
           if(error) { console.log(error); reject(error); }
@@ -113,11 +113,29 @@ const createMascota = (usuario_id, mascota) => {
   });
 };
 
+const getMascotas = (usuario_id) => {
+  return new Promise((resolve, reject) => {
+    Usuario.findById(usuario_id, (err, usuario) => {
+      if(err || !usuario) reject(err);
+      else {
+        Mascota.find({dueno: usuario_id}, (err, mascotas) => {
+          if(err) reject(err);
+          else {
+            console.log(mascotas);
+            resolve(mascotas);
+          }
+        })
+      }
+    });
+  });
+}
+
 module.exports = {
   getAllUsuarios,
   getUsuario,
   createUsuario,
   editUsuario,
   deleteUsuario,
-  createMascota
+  createMascota,
+  getMascotas
 }
