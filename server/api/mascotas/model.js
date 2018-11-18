@@ -8,8 +8,7 @@ var mascotaSchema = Schema({
     dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     sexo: {
       type: String,
-      enum: ['M', 'F'],
-      default: 'user' 
+      enum: ['M', 'F']
     },
     
 //   order: [{
