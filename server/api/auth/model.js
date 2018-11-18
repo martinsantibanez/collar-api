@@ -18,12 +18,6 @@ var UserSchema = new mongoose.Schema({
         default: 'user'
     },
     nombre: String,
-    nacimiento: Number,
-    sexo: {
-        type: String,
-        enum: ['M', 'F'],
-        default: 'user'
-    },
     telefono: Number,
     domicilio: String
 }, {
