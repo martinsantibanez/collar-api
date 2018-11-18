@@ -25,6 +25,7 @@ const getUsuario = (usuario_id) => {
     Usuario
     .findById(usuario_id)
     .select('-password')
+    .populate('mascotas')
     .lean()
     .exec((error, result) => {
       if (error) { console.log(error); reject(error); }

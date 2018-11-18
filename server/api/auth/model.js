@@ -17,11 +17,25 @@ var UserSchema = new mongoose.Schema({
         enum: ['user', 'vet'],
         default: 'user'
     },
-    nombre: String
+    nombre: String,
+    nacimiento: Number,
+    sexo: {
+        type: String,
+        enum: ['M', 'F'],
+        default: 'user'
+    },
+    telefono: Number,
+    domicilio: String
 }, {
     timestamps: true
 });
  
+UserSchema.virtual('mascotas', {
+    ref: 'Mascota',
+    localField: '_id',
+    foreignField: 'dueno'
+});
+
 UserSchema.pre('save', function(next){
     var user = this;
     var SALT_FACTOR = 5;

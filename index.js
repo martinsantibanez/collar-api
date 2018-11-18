@@ -2,7 +2,7 @@ var express = require('express');
 const mongoose = require('mongoose');
 const serverConfig = require('./config');
 
-mongoose.connect(serverConfig.DBURL);
+mongoose.connect(serverConfig.DBURL, { useNewUrlParser: true });
 
 const app = express();
 

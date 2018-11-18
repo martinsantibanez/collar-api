@@ -6,6 +6,12 @@ var mascotaSchema = Schema({
     nacimiento: Number,
     raza: String,
     dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    sexo: {
+      type: String,
+      enum: ['M', 'F'],
+      default: 'user' 
+    },
+    
 //   order: [{
     // product: {type: Schema.Types.ObjectId, ref: 'Product'},
     // quantity: Number

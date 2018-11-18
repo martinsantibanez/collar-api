@@ -31,12 +31,12 @@ dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 ## Endpoints
 Todos empiezan con /api
 
-## `POST /register`
+## `POST /usuarios`
 ```json
 {
     "email": "admin",
     "password": "admin"
-    "role": ["usuario"/"veterinario"]
+    "role": ["user"/"vet"]
 }
 
 ```
@@ -55,7 +55,7 @@ Output:
     "user": {
         "_id": "5be8c95dca6a824194b9a146",
         "email": "admin",
-        "role": "veterinario"
+        "role": "vet"
     }
 }
 ```
