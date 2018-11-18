@@ -2,7 +2,7 @@ const passport = require('passport');
 
 const express = require('express');
 const router = express.Router();
-const authService = require('../services/auth');
+const authService = require('./service');
 // const getPerfilPropio = require('./controller').getPerfilPropio;
 var requireLogin = passport.authenticate('local', {session: false});
 

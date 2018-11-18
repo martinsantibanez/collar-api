@@ -1,4 +1,4 @@
-const Usuario = require('../auth/model');
+const Usuario = require('./model');
 const Mascota = require('../mascotas/model');
 
 const getAllUsuarios = () => {
@@ -93,27 +93,6 @@ const deleteUsuario = (usuario_id) => {
   });
 }
 
-const createMascota = (usuario_id, mascota) => {
-  return new Promise((resolve, reject) => {
-    Usuario
-    .findById(usuario_id, function (err, usuario) {
-      if(err || !usuario) reject(err);
-      else {
-        var newMascota = new Mascota({
-          nombre: mascota.nombre,
-          nacimiento: mascota.nacimiento,
-          raza: mascota.raza,
-          dueno: usuario._id
-        });
-        newMascota.save((error) => {
-          if(error) { console.log(error); reject(error); }
-          else { resolve(newMascota); }
-        });
-      }
-    });
-  });
-};
-
 const getMascotas = (usuario_id) => {
   return new Promise((resolve, reject) => {
     Usuario.findById(usuario_id, (err, usuario) => {
@@ -137,6 +116,5 @@ module.exports = {
   createUsuario,
   editUsuario,
   deleteUsuario,
-  createMascota,
   getMascotas
 }

@@ -3,7 +3,7 @@ const getAllUsuarios = require('./controller').getAllUsuarios;
 const createUsuario = require('./controller').createUsuario;
 const editUsuario = require('./controller').editUsuario;
 const deleteUsuario = require('./controller').deleteUsuario;
-const createMascota = require('./controller').createMascota;
+const createMascota = require('../mascotas/controller').createMascota;
 const getMascotas = require('./controller').getMascotas;
 
 const express = require('express');
@@ -54,9 +54,11 @@ router.get('/usuarios/:id/mascotas', (req, res) => {
 });
 //add Mascota to Usuario
 router.post('/usuarios/:id/mascotas', (req, res) => {
-  createMascota(req.params.id, req.body).then(
+  req.body.dueno = req.params.id;
+  console.log(req.body.dueno);
+  createMascota(req.body).then(
     (result) => { res.send(result); },
-    (error) => { res.status(400).send(error); }
+    (error) => { console.log(error); res.status(400).send(error); }
   );
 });
 

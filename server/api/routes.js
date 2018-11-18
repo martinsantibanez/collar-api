@@ -7,7 +7,7 @@ const mascotasAPI = require('./mascotas/api');
 const usuariosAPI = require('./usuarios/api');
 const authAPI = require('./auth/api');
 const passport = require('passport');
-const authService = require('./services/auth');
+const authService = require('./auth/service');
 
 /**
  * routes configurations

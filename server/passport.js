@@ -3,7 +3,7 @@ const serverConfig = require('../config');
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
 var LocalStrategy = require('passport-local').Strategy;
-const User = require('./api/auth/model');
+const User = require('./api/usuarios/model');
 var localOptions = {
   usernameField: 'email'
 };
