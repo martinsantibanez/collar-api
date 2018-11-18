@@ -35,7 +35,7 @@ router.post('/usuarios', (req, res) => {
 router.put('/usuarios/:id', (req, res) => {
   editUsuario(req.params.id, req.body).then(
     (result) => { res.send(result); },
-    (error) => { res.status(400).send(error)}
+    (error) => { console.log(error); res.status(400).send(error)}
   );
 });
 //remove Usuario

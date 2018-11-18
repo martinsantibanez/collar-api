@@ -41,6 +41,8 @@ const createUsuario = (usuario) => {
     var password = usuario.password;
     var role = usuario.role;
     var nombre = usuario.nombre;
+    var telefono = usuario.telefono;
+    var domicilio = usuario.domicilio;
     if(!email){
       // return res.status(422).send({error: 'You must enter an email address'});
       reject(new Error());
@@ -61,7 +63,9 @@ const createUsuario = (usuario) => {
         email: email,
         password: password,
         role: role,
-        nombre: nombre
+        nombre: nombre,
+        telefono: telefono,
+        domicilio: domicilio
       });
       user.save(function(err, user){
         if(err){
@@ -76,9 +80,21 @@ const createUsuario = (usuario) => {
 const editUsuario = (usuario_id, usuario) => {
   return new Promise((resolve, reject) => {
     Usuario
-    .findByIdAndUpdate(usuario_id, usuario, (error, result) => {
-      if(error) { console.log(error); reject(error); }
-      else { resolve(result); }
+    .findById(usuario_id, (err, existingUser) => {
+      if(err || !existingUser) reject(err);
+      else {
+        existingUser.email = usuario.email;
+        if(usuario.password && usuario.password !='')
+          existingUser.password = usuario.password;
+        existingUser.role = usuario.role;
+        existingUser.nombre = usuario.nombre;
+        existingUser.telefono = usuario.telefono;
+        existingUser.domicilio = usuario.domicilio;
+        existingUser.save(function(err, user){
+          if(err) reject(err);
+          resolve(user);
+        })
+      }
     });
   });
 }
