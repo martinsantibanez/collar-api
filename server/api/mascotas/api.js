@@ -4,6 +4,8 @@ const createMascota = require('./controller').createMascota;
 const editMascota = require('./controller').editMascota;
 const deleteMascota = require('./controller').deleteMascota;
 
+const createAlerta = require('../alertas/controller').createAlerta;
+
 const express = require('express');
 const router = express.Router();
 
@@ -41,7 +43,15 @@ router.delete('/mascotas/:id', (req, res) => {
   deleteMascota(req.params.id, req.body).then(
     (result) => { res.send(result); },
     (error) => { res.status(400).send(error) }
+    );
+  });
+
+//create alert for Mascota
+router.post('/mascotas/:id_mascota/alertas', (req, res) => {
+  req.body.mascota = req.params.id_mascota;
+  createAlerta(req.body).then(
+    (result) => { res.send(result); },
+    (error) => { res.status(400).send(error) }    
   );
 });
-
 module.exports = router;

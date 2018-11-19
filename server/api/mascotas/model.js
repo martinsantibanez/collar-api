@@ -10,6 +10,7 @@ var mascotaSchema = Schema({
       type: String,
       enum: ['M', 'F']
     },
+    collar: String
     
 //   order: [{
     // product: {type: Schema.Types.ObjectId, ref: 'Product'},
@@ -18,6 +19,11 @@ var mascotaSchema = Schema({
 //   status: String //AVAILABLE, OPEN, BILLED - TODO enum
 });
 
+mascotaSchema.virtual('alertas', {
+  ref: 'Alerta',
+  localField: '_id',
+  foreignField: 'mascota'
+});
 mascotaSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
   next();

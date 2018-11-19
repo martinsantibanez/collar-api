@@ -25,6 +25,7 @@ const getMascota = (mascota_id) => {
   return new Promise((resolve, reject) => {
     Mascota
     .findById(mascota_id)
+    .populate('alertas')
     .lean()
     .exec((error, result) => {
       if (error) { console.log(error); reject(error); }
