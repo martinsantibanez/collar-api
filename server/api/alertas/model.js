@@ -12,6 +12,11 @@ var alertaSchema = Schema({
     tipo: {
       type: String,
     },
+    leida: {
+      type: Boolean,
+      default: false
+    },
+    fechaLeida: Date,
     mascota: {type: Schema.Types.ObjectId, ref: 'Mascota', required: true},
     veterinario: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 }, { 
