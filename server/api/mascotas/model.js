@@ -11,13 +11,9 @@ var mascotaSchema = Schema({
       enum: ['M', 'F']
     },
     collar: String
-    
-//   order: [{
-    // product: {type: Schema.Types.ObjectId, ref: 'Product'},
-    // quantity: Number
-//   }],
-//   status: String //AVAILABLE, OPEN, BILLED - TODO enum
 });
+
+// TODO retornar edad
 
 mascotaSchema.virtual('alertas', {
   ref: 'Alerta',
