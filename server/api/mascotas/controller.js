@@ -1,5 +1,6 @@
 const Mascota = require('./model');
 const Usuario = require('../usuarios/model')
+const Alerta = require('../alertas/model')
 
 const getAllMascotas = () => {
   return new Promise((resolve, reject) => {
@@ -71,7 +72,10 @@ const deleteMascota = (mascota_id) => {
     Mascota
     .findByIdAndRemove(mascota_id, (error, result) => {
       if(error) { console.log(error); reject(error); }
-      else { resolve(result); }
+      else { 
+        Alerta.deleteMany({ mascota: result._id }).exec();
+        resolve(result);
+      }
     });
   });
 }

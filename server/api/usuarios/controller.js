@@ -104,7 +104,10 @@ const deleteUsuario = (usuario_id) => {
     Usuario
     .findByIdAndRemove(usuario_id, (error, result) => {
       if(error) { console.log(error); reject(error); }
-      else { resolve(result); }
+      else { 
+        Mascota.deleteMany({dueno: result._id}).exec();
+        resolve(result); 
+      }
     });
   });
 }

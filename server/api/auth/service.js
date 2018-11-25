@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken'); 
 var User = require('../usuarios/model');
+var getUsuario = require('../usuarios/controller').getUsuario;
 var serverConfig = require('../../../config');
  
 function generateToken(user){
@@ -61,3 +62,12 @@ exports.requireLogin = (req, res, next) => {
         res.sendStatus(403);
     }
 };
+
+exports.getPerfilPropio = (id_usuario) => {
+    return new Promise((resolve, reject) => {
+        getUsuario(id_usuario).then(
+            (result) => resolve(result),
+            (error) => reject(error)
+        )
+    })
+}

@@ -18,7 +18,9 @@ role: {
     enum: ['user', 'vet'],
     default: 'user'
 },
-nombre: String
+nombre: String,
+telefono: Number,
+domicilio: String
 ```
 ### Mascota
 ```
@@ -36,7 +38,9 @@ Todos empiezan con /api
 {
     "email": "admin",
     "password": "admin"
-    "role": ["user"/"vet"]
+    "role": ["user"/"vet"],
+    "telefono": 12345,
+    "domicilio": "asdasd"
 }
 
 ```
@@ -65,3 +69,27 @@ Output:
 Agregar mascota al sistema asociado al usuario id.
 ## `GET /mascotas`
 Lista de todas las mascotas
+
+## `GET /me`
+Perfil del usuario conectado
+```json
+{
+  "_id": "5beac89abe69d731bc098b37",
+  "role": "vet",
+  "email": "vet",
+  "nombre": "veterinarioski",
+  "createdAt": "2018-11-13T12:50:34.925Z",
+  "updatedAt": "2018-11-13T12:50:34.925Z",
+  "__v": 0,
+  "mascotas": [
+    {
+      "_id": "5beba19fbbd6773874e6169f",
+      "nombre": "Martín",
+      "nacimiento": 3234,
+      "raza": "Humano",
+      "dueno": "5beac89abe69d731bc098b37",
+      "__v": 0
+    }
+  ]
+}
+```

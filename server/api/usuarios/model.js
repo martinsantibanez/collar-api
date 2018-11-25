@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
- 
+var Mascota = require('../mascotas/model');
+
 var UserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -49,7 +50,15 @@ UserSchema.pre('save', function(next){
         });
     });
 });
- 
+
+UserSchema.pre('remove', function(next) {
+    Mascota.remove({dueno: this._id}).exec();
+    next();
+});
+UserSchema.pre('findOneAndRemove', function(next) {
+    Mascota.deleteMany({dueno: this._id}).exec();
+    next();
+});
 UserSchema.methods.comparePassword = function(passwordAttempt, cb){
     bcrypt.compare(passwordAttempt, this.password, function(err, isMatch){
         if(err){
