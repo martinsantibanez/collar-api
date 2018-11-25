@@ -3,6 +3,7 @@ const getAllAlertas = require('./controller').getAllAlertas;
 const createAlerta = require('./controller').createAlerta;
 const editAlerta = require('./controller').editAlerta;
 const deleteAlerta = require('./controller').deleteAlerta;
+const leerAlerta = require('./controller').leerAlerta;
 
 const express = require('express');
 const router = express.Router();
@@ -44,4 +45,10 @@ router.delete('/alertas/:id', (req, res) => {
   );
 });
 
+router.post('/alertas/:id/leer', (req, res) => {
+  leerAlerta(req.params.id, req.user._id).then(
+    (result) => { res.send(result); },
+    (error) => { res.status(400).send(error) }
+  );
+})
 module.exports = router;

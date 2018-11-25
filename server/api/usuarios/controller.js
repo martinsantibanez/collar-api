@@ -118,7 +118,10 @@ const getMascotas = (usuario_id) => {
       if(err || !usuario) reject(err);
       else {
         Mascota.find({dueno: usuario_id})
-        .populate('alertas')
+        .populate({
+          path: 'alertas',
+          match: { leida: false }
+        })
         .lean()
         .exec((err, mascotas) => {
           if(err) reject(err);

@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express');
 const mascotasAPI = require('./mascotas/api');
 const usuariosAPI = require('./usuarios/api');
+const alertasAPI = require('./alertas/api');
 const authAPI = require('./auth/api');
 const passport = require('passport');
 const authService = require('./auth/service');
@@ -28,6 +29,7 @@ const routesConfig = (app) => {
   // app.use('/api', authService.requireLogin, authService.roleAuthorization(['vet']), usuariosAPI);
   app.use('/api', usuariosAPI);
   app.use('/api', mascotasAPI);
+  app.use('/api', authService.requireLogin, alertasAPI);
 
   
   // all get request will send index.html for react-router

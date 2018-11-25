@@ -1,5 +1,5 @@
 const Alerta = require('./model');
-
+const Mascota = require('../mascotas/model')
 const getAllAlertas = () => {
   return new Promise((resolve, reject) => {
     Alerta
@@ -63,10 +63,33 @@ const deleteAlerta = (alerta_id) => {
   });
 }
 
+const leerAlerta = (alerta_id, usuario_id) => {
+  return new Promise((resolve, reject) => {
+    Alerta
+    .findById(alerta_id, (error, alerta) => {
+      if(error) { reject(error); }
+      else
+        Mascota.findById(alerta.mascota._id, (error, mascota) => {
+          if(error) reject(error);
+          else
+            if(mascota.dueno._id == usuario_id){
+              alerta.leida = true;
+              alerta.fechaLeida = new Date();
+              alerta.save((err, alerta) => {
+                if(err) reject(err);
+                resolve(alerta);
+              });
+            }
+        })
+    })
+  })
+}
+
 module.exports = {
   getAllAlertas,
   getAlerta,
   createAlerta,
   editAlerta,
-  deleteAlerta
+  deleteAlerta,
+  leerAlerta
 }
