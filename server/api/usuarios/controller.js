@@ -117,10 +117,12 @@ const getMascotas = (usuario_id) => {
     Usuario.findById(usuario_id, (err, usuario) => {
       if(err || !usuario) reject(err);
       else {
-        Mascota.find({dueno: usuario_id}, (err, mascotas) => {
+        Mascota.find({dueno: usuario_id})
+        .populate('alertas')
+        .lean()
+        .exec((err, mascotas) => {
           if(err) reject(err);
           else {
-            console.log(mascotas);
             resolve(mascotas);
           }
         })

@@ -1,6 +1,8 @@
 var jwt = require('jsonwebtoken'); 
 var User = require('../usuarios/model');
 var getUsuario = require('../usuarios/controller').getUsuario;
+var editUsuario = require('../usuarios/controller').editUsuario;
+var getMascotas = require('../usuarios/controller').getMascotas;
 var serverConfig = require('../../../config');
  
 function generateToken(user){
@@ -69,5 +71,23 @@ exports.getPerfilPropio = (id_usuario) => {
             (result) => resolve(result),
             (error) => reject(error)
         )
+    })
+}
+
+exports.editPerfilPropio = (id_usuario, usuario) => {
+    return new Promise((resolve, reject) => {
+        editUsuario(id_usuario, usuario).then(
+            (result) => resolve(result),
+            (error) => reject(error)
+        );
+    })
+}
+
+exports.getMascotas = (id_usuario) => {
+    return new Promise((resolve, reject) => {
+        getMascotas(id_usuario).then(
+            (result) => resolve(result),
+            (error) => reject(error)
+        );
     })
 }
