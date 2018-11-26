@@ -37,14 +37,15 @@ var jwtOptions = {
 
 var jwtLogin = new JwtStrategy(jwtOptions, function(payload, done){
     User.findById(payload._id, function(err, user){
-        if(err){
-            return done(err, false);
-        }
-        if(user){
-            done(null, user);
-        } else {
-            done(null, false);
-        }
+      if(err){
+        console.log(err);
+        return done(err, false);
+      }
+      if(user){
+        done(null, user);
+      } else {
+        done(null, false);
+      }
     });
 });
 

@@ -1,5 +1,11 @@
 # API
 
+## Ejecuión
+```
+npm i
+npm test
+```
+
 ## Modelos
 ### Usuario
 ```json

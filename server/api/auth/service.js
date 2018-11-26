@@ -48,20 +48,23 @@ exports.roleAuthorization = function(roles){
 
 // check if Token exists on request Header and attach token to request as attribute
 exports.requireLogin = (req, res, next) => {
+    var errLogin = new Error();
+    errLogin.status = 403;
+    errLogin.message = "Por favor inicia sesión";
     // Get auth header value
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {
         req.token = bearerHeader.split(' ')[1];
         jwt.verify(req.token, serverConfig.SECRET, (err, authData) => {
             if(err) {
-                res.sendStatus(403);
+                next(errLogin);
             } else {
                 req.user = authData;
                 next();
             }
         })
     } else {
-        res.sendStatus(403);
+        next(errLogin);
     }
 };
 
