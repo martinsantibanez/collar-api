@@ -34,7 +34,8 @@ exports.roleAuthorization = function(roles){
     var user = req.user;
     User.findById(user._id, function(err, foundUser){
       if(err){
-        res.status(422).json({error: 'No user found.'});
+          err.status = 422;
+        // res.status(422).json({error: 'No user found.'});
         return next(err);
       }
       if(roles.indexOf(foundUser.role) > -1){
@@ -48,9 +49,8 @@ exports.roleAuthorization = function(roles){
 
 // check if Token exists on request Header and attach token to request as attribute
 exports.requireLogin = (req, res, next) => {
-    var errLogin = new Error();
+    var errLogin = new Error("Por favor inicia sesión");
     errLogin.status = 403;
-    errLogin.message = "Por favor inicia sesión";
     // Get auth header value
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {

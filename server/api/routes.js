@@ -33,26 +33,17 @@ const routesConfig = (app) => {
   app.use('/api', authService.requireLogin, alertasAPI);
   app.use('/api', veterinariosAPI);
 
+  // Si llega aca es porque no existe
   app.use(function(req, res, next) {
     var err = new Error('Not found');
     err.status = 404;
     next(err);
-  })
-  // all get request will send index.html for react-router
-  // to handle the route request
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
-  // });
+  });
 
   // error handler
   app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    // res.locals.message = err.message;
-    // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
     console.log(err);
-    res.status(err.status || 500).send({ message: err.message });
+    res.status(err.status || 500).send({ message: err.message != ''? err.message : "Ups! Ocurrió un error." });
   });
 
 };

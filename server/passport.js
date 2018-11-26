@@ -9,6 +9,8 @@ var localOptions = {
 };
 
 var localLogin = new LocalStrategy(localOptions, function(email, password, done){
+  var errLogin = new Error("Error al iniciar sesión. Por favor inténtalo nuevamente.");
+  errLogin.status = 403;
   User.findOne({
     email: email
   }, function(err, user){
@@ -16,14 +18,14 @@ var localLogin = new LocalStrategy(localOptions, function(email, password, done)
       return done(err);
     }
     if(!user){
-      return done(null, false, {error: 'Login failed. Please try again.'});
+      return done(errLogin);
     }
     user.comparePassword(password, function(err, isMatch){
       if(err){
         return done(err);
       }
       if(!isMatch){
-        return done(null, false, {error: 'Login failed. Please try again.'});
+        return done(errLogin);
       }
       return done(null, user);
     });

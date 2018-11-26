@@ -18,7 +18,10 @@ var UserSchema = new mongoose.Schema({
         enum: ['user', 'vet'],
         default: 'user'
     },
-    nombre: String,
+    nombre: {
+        type: String,
+        required: true
+    },
     telefono: Number,
     domicilio: String
 }, {
