@@ -45,10 +45,10 @@ const createUsuario = (usuario) => {
     var domicilio = usuario.domicilio;
     if(!email){
       // return res.status(422).send({error: 'You must enter an email address'});
-      reject(new Error());
+      reject(new Error('Debes indicar un email.'));
     } 
     if(!password){
-      reject(new Error());
+      reject(new Error('Debes indicar una contraseña'));
       // return res.status(422).send({error: 'You must enter a password'});
     }
     Usuario.findOne({email: email}, function(err, existingUser){
@@ -56,7 +56,7 @@ const createUsuario = (usuario) => {
         reject(err);
       }
       if(existingUser){
-        reject(new Error());
+        reject(new Error('El email está en uso.'));
           // return res.status(422).send({error: 'That email address is already in use'});
       }
       var user = new Usuario({
@@ -134,11 +134,21 @@ const getMascotas = (usuario_id) => {
   });
 }
 
+const getClientes = () => {
+  return new Promise((resolve, reject) => {
+    Usuario.find( { role: 'user' } , (err, clientes) => {
+      if(err) reject(err);
+      resolve(clientes);
+    })
+  })
+}
+
 module.exports = {
   getAllUsuarios,
   getUsuario,
   createUsuario,
   editUsuario,
   deleteUsuario,
-  getMascotas
+  getMascotas,
+  getClientes
 }
