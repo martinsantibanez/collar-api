@@ -5,6 +5,7 @@ const editUsuario = require('./controller').editUsuario;
 const deleteUsuario = require('./controller').deleteUsuario;
 const createMascota = require('../mascotas/controller').createMascota;
 const getMascotas = require('./controller').getMascotas;
+const getClientes = require('./controller').getClientes;
 
 const express = require('express');
 const router = express.Router();
@@ -61,5 +62,12 @@ router.post('/usuarios/:id/mascotas', (req, res) => {
     (error) => { console.log(error); res.status(400).send(error); }
   );
 });
+
+router.get('/clientes', (req, res, next) => {
+  getClientes().then(
+    (result) => { res.send(result); },
+    (error) => { next(error); }
+  )
+})
 
 module.exports = router;

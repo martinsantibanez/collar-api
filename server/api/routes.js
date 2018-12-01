@@ -27,11 +27,11 @@ const routesConfig = (app) => {
 
   // apply apis
   app.use('/api', authAPI);
-  app.use('/api', authService.requireLogin, authService.roleAuthorization(['vet']), usuariosAPI);
   // app.use('/api', authService.requireLogin, usuariosAPI);
+  app.use('/api', veterinariosAPI);
   app.use('/api', authService.requireLogin, mascotasAPI);
   app.use('/api', authService.requireLogin, alertasAPI);
-  app.use('/api', veterinariosAPI);
+  app.use('/api', authService.requireLogin, usuariosAPI);
 
   // Si llega aca es porque no existe
   app.use(function(req, res, next) {
