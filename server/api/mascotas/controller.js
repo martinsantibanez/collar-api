@@ -82,11 +82,23 @@ const deleteMascota = (mascota_id) => {
 
 const sincronizar = (mascota_id, collar_id) => {
   return new Promise((resolve, reject) => {
-    console.log(collar_id);
     if(!collar_id) reject(new Error('Debes especificar un id de collar.'));
     Mascota.findById(mascota_id, (error, mascota) => {
       if(error) reject(error);
       mascota.collar = collar_id;
+      mascota.save((error) => {
+        if(error) reject(error);
+        resolve(mascota);
+      });
+    })
+  })
+}
+
+const deleteCollar = (mascota_id) => {
+  return new Promise((resolve, reject) => {
+    Mascota.findById(mascota_id, (error, mascota) => {
+      if(error) reject(error);
+      mascota.collar = undefined;
       mascota.save((error) => {
         if(error) reject(error);
         resolve(mascota);
@@ -101,5 +113,6 @@ module.exports = {
   createMascota,
   editMascota,
   deleteMascota,
-  sincronizar
+  sincronizar,
+  deleteCollar
 }

@@ -4,6 +4,7 @@ const createMascota = require('./controller').createMascota;
 const editMascota = require('./controller').editMascota;
 const deleteMascota = require('./controller').deleteMascota;
 const sincronizar = require('./controller').sincronizar;
+const deleteCollar = require('./controller').deleteCollar;
 
 const createAlerta = require('../alertas/controller').createAlerta;
 
@@ -48,10 +49,17 @@ router.delete('/mascotas/:id', (req, res) => {
   });
 // sincronizar collar
 router.post('/mascotas/:id/sincronizar', (req, res, next) => {
-  console.log(req.body)
+  //console.log(req.body)
   sincronizar(req.params.id, req.body.id_collar).then(
     (result) => { res.send(result); },
     (error) => { next(error); }
+  )
+});
+//desincronizar collar
+router.delete('/mascotas/:id/sincronizar', (req, res, next) => {
+  deleteCollar(req.params.id).then(
+    (result) => res.send(result),
+    (error) => next(error)
   )
 });
 //create alert for Mascota

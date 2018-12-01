@@ -105,3 +105,5 @@ REQUEST:
 ```
 { id_collar: 'xxxx' }
 ```
+## DELETE /mascotas/:id/sincronizar
+Desincronizar collar.
