@@ -99,3 +99,9 @@ Perfil del usuario conectado
   ]
 }
 ```
+## POST /mascotas/:id/sincronizar
+Sincronizar collar con mascota
+REQUEST:
+```
+{ id_collar: 'xxxx' }
+```
