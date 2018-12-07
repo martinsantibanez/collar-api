@@ -82,7 +82,11 @@ const deleteMascota = (mascota_id) => {
 
 const sincronizar = (mascota_id, collar_id) => {
   return new Promise((resolve, reject) => {
-    if(!collar_id) reject(new Error('Debes especificar un id de collar.'));
+    if(!collar_id){
+      let err = new Error('Debes especificar un id de collar.');
+      err.status = 400;
+      reject(err);
+    }
     Mascota.findById(mascota_id, (error, mascota) => {
       if(error) reject(error);
       mascota.collar = collar_id;
