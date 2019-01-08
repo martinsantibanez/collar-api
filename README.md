@@ -11,7 +11,19 @@
 npm i
 npm test
 ```
+- Crear un usuario administrador (vet):
 
+Hacer request `POST /api/register`
+```
+{
+    "email": "vet",
+    "password": "vet",
+    "role": "vet"
+}
+```
+Luego se podrá iniciar sesión y crear usuarios.
+
+*Esta ruta debería estar protegida, pero para DEMO se mantiene abierta.
 ## Modelos
 ### Usuario
 ```json
@@ -43,7 +55,7 @@ dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 ```
 
 ## (Algunos) Endpoints
-Todos empiezan con /api
+### Todos empiezan con /api
 
 ## `POST /usuarios`
 ```json
