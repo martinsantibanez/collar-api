@@ -1,6 +1,12 @@
 # API
+- [mertinop/collar-dashboard](https://github.com/mertinop/collar-dashboard): Vue.js Frontend
+- [mertinop/collar-api](https://github.com/mertinop/collar-api): Express API
+- [mertinop/collar-server](https://github.com/mertinop/collar-server): Socketio server (para datos en tiempo real)
 
-## Ejecuión
+## Instalacion
+ - Configurar `DBURL` en archivo `config.js`
+ 
+ Luego:
 ```
 npm i
 npm test
@@ -36,7 +42,7 @@ raza: String,
 dueno: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 ```
 
-## Endpoints
+## (Algunos) Endpoints
 Todos empiezan con /api
 
 ## `POST /usuarios`
@@ -99,11 +105,11 @@ Perfil del usuario conectado
   ]
 }
 ```
-## POST /mascotas/:id/sincronizar
+## `POST /mascotas/:id/sincronizar`
 Sincronizar collar con mascota
 REQUEST:
 ```
 { id_collar: 'xxxx' }
 ```
-## DELETE /mascotas/:id/sincronizar
+## `DELETE /mascotas/:id/sincronizar`
 Desincronizar collar.
