@@ -1,7 +1,18 @@
-# API FutureCan
+# FutureCan
 - [mertinop/collar-dashboard](https://github.com/mertinop/collar-dashboard): Vue.js Frontend
 - [mertinop/collar-api](https://github.com/mertinop/collar-api): Express API
-- [mertinop/collar-server](https://github.com/mertinop/collar-server): Socketio server (para datos en tiempo real)
+- [mertinop/collar-server](https://github.com/mertinop/collar-server): Socketio server (for real time data)
+
+## About
+REST Api for "FutureCan" (see screenshots on collar-dashboard repo). 
+
+Code and docs are in Spanish because it was a school project. 
+
+Stack: 
+-
+- Express
+- Mongoose
+- Passport with JWT tokens for auth
 
 ## Instalacion
  - Configurar `DBURL` en archivo `config.js`
